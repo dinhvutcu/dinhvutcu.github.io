@@ -1,7 +1,7 @@
 ---
 title: "Do Future Price of Coffee and Sugar have an Impact on Starbuck and Dunkin Brand's stock?"
 author: "Nina Vu"
-date: "8/2/2020"
+date: "8/3/2020"
 output: html_document
 ---
 
@@ -21,7 +21,7 @@ Welcome to my project where I use RStudio to analyze and plot the stock data. In
 
 To find out whether there is a direct relationship between those raw materials and the coffee stock, I have to obtain Starbuck and Dunkin' Brand stock data first. Using “getSymbols” function, pulling the stock information from Yahoo was a breeze. However, I want to keep it simple. Therefore, I will only look at the stock prices from the beginning of 2020.
 
-``` {r stock_data, message = FALSE, warning = FALSE, include = FALSE}
+``` {r stock_data, message = FALSE, warning = FALSE}
 library(quantmod)
 
 getSymbols(Symbols = c("DNKN", "SBUX"), src = "yahoo", from = "2020-01-01", to = Sys.Date(), auto.assign = TRUE)
@@ -49,9 +49,9 @@ Coffee_Contract <- rename(Coffee_Contract, Value = Open)
 
 ```
 
-After I have the data from Quandl, I noticed that my data from Yahoo and Quandl are in different formats. To create a graph and unveil the relationship, I am only interested in the date, time, and stock value of that day. Therefore, I have to put them in the format that I want using the tibble package in R.  Finally, I only have to combine the data in one big table before graphing.
+After I have the data from Quandl, I noticed that my data from Yahoo and Quandl are in different formats. To create a graph and unveil the relationship, I am only interested in the date, time, and stock value of that day. Therefore, I have to put them in the format that I want using the tibble package in R. 
 
-```{r process_data, message = FALSE, warning = FALSE, echo = FALSE}
+```{r process_data, message = FALSE, warning = FALSE}
 library(tibble)    # for as_tibble() function
 
 SBUX_tibble <- as_tibble(SBUX)
@@ -68,9 +68,10 @@ DNKN_tibble <- select(DNKN_tibble, Date, DNKN.Close, Name)
 DNKN_tibble <- rename(DNKN_tibble, Value = DNKN.Close)
 
 ```
+ 
+ Finally, I only have to combine the data in one big table before graphing.
 
-
-```{r combine_data, echo = FALSE}
+```{r combine_data}
 
 #Combine all Data
 all_data <- rbind(SBUX_tibble, DNKN_tibble, Sugar_Contract, Coffee_Contract)
@@ -81,7 +82,7 @@ all_data <- rbind(SBUX_tibble, DNKN_tibble, Sugar_Contract, Coffee_Contract)
 # Analyze the Plot
 
 
-```{r plot_data, echo = FALSE, message = FALSE, warning = FALSE, fig.align = "center" }
+```{r plot_data, warning = FALSE, fig.align = "center" }
 library(ggplot2)   # for ggplot() function
 
 #Create a plot
